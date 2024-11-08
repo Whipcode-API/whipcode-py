@@ -19,7 +19,7 @@ class Langs:
     CLISP      = 15
     RACKET     = 16
     CRYSTAL    = 17
-    CLOJUR     = 18
+    CLOJURE    = 18
     X86        = 19
     ZIG        = 20
     NIM        = 21
