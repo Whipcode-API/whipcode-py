@@ -1,0 +1,9 @@
+*.py             text diff=python
+*.gitattributes  text
+*.gitignore      text
+*.editorconfig   text
+*.flake8         text
+*.md             text diff=markdown
+*.json           text
+*.toml           text
+LICENSE          text
