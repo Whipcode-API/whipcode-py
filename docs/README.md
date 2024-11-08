@@ -1,6 +1,8 @@
 # whipcode-py
 A convenient way to interact with [Whipcode API](https://whipcode.app) from Python applications.
 
+Compatible with [self-hosted](https://github.com/Whipcode-API/whipcode) instances as well.
+
 ## Installation
 Get it from PyPI:
 ```
