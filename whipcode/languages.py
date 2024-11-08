@@ -1,7 +1,5 @@
 """Constants for languages"""
 
-from enum import Enum
-
 
 class Langs:
     PYTHON     = 1
