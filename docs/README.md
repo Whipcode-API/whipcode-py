@@ -1,7 +1,7 @@
 # whipcode-py
 ![](https://img.shields.io/pypi/v/whipcode?style=flat&color=blue) ![](https://img.shields.io/pypi/l/whipcode?style=flat&color=blue) ![](https://img.shields.io/github/actions/workflow/status/whipcode-api/whipcode-py/python-tests.yml?label=tests)
 
-A convenient way to interact with [Whipcode API](https://whipcode.app) from Python applications.
+A convenient way to access [Whipcode API](https://whipcode.app) from Python applications.
 
 Compatible with [self-hosted](https://github.com/Whipcode-API/whipcode) instances as well.
 
@@ -39,7 +39,7 @@ def main():
     whip = Whipcode()
     whip.rapid_key("YOUR_RAPIDAPI_KEY")
 
-    code = '(println "Success!")'
+    code = '(println "Hello World!")'
 
     result = whip.run(code, Langs.CLOJURE)
 
