@@ -1,5 +1,5 @@
 # whipcode-py
-![](https://img.shields.io/pypi/v/whipcode?style=flat&color=blue) ![](https://img.shields.io/pypi/l/whipcode?style=flat&color=blue) ![](https://img.shields.io/github/actions/workflow/status/whipcode-api/whipcode-py/python-tests.yml?label=tests)
+[![PyPI badge](https://img.shields.io/pypi/v/whipcode?style=flat&color=blue)](https://pypi.org/project/whipcode) [![License badge](https://img.shields.io/pypi/l/whipcode?style=flat&color=blue)](https://github.com/Whipcode-API/whipcode-py/blob/main/LICENSE) [![Workflow badge](https://img.shields.io/github/actions/workflow/status/whipcode-api/whipcode-py/python-tests.yml?label=tests)](https://github.com/Whipcode-API/whipcode-py/actions/workflows/python-tests.yml)
 
 A convenient way to access [Whipcode API](https://whipcode.app) from Python applications.
 
