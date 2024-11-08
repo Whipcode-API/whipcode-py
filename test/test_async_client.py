@@ -1,6 +1,5 @@
 import unittest
 from unittest.mock import patch, AsyncMock
-import asyncio
 
 from whipcode import Whipcode
 from whipcode.exceptions import RequestError
