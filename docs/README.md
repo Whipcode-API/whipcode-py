@@ -16,16 +16,15 @@ Here's an asynchronous snippet:
 ```python
 import asyncio
 
-from whipcode import Whipcode
+from whipcode import Whipcode, Langs
 
 async def main():
     whip = Whipcode()
     whip.rapid_key("YOUR_RAPIDAPI_KEY")
 
     code = "echo 'Hello World!'"
-    lang = 3
 
-    execution = whip.run_async(code, lang)
+    execution = whip.run_async(code, Langs.BASH)
     result = await execution
 
     print(result)
@@ -34,16 +33,15 @@ asyncio.run(main())
 ```
 And a synchronous one:
 ```python
-from whipcode import Whipcode
+from whipcode import Whipcode, Langs
 
 def main():
     whip = Whipcode()
     whip.rapid_key("YOUR_RAPIDAPI_KEY")
 
-    code = "echo 'Hello World!'"
-    lang = 3
+    code = '(println "Success!")'
 
-    result = whip.run(code, lang)
+    result = whip.run(code, Langs.CLOJURE)
 
     print(result)
 
@@ -111,14 +109,14 @@ Sets the RapidAPI key to use when making requests.
 
 ### run
 ```python
-run(code: str, language_id: str | int, args: list = [], timeout: int = 0) -> ExecutionResult
+run(code: str, language: str | int, args: list = [], timeout: int = 0) -> ExecutionResult
 ```
 Makes a request to the endpoint synchronously.
 
 **Parameters:**
 - **code** - *str*\
   &nbsp;&nbsp;&nbsp;The code to execute.
-- **language_id** - *str, int*\
+- **language** - *str, int*\
   &nbsp;&nbsp;&nbsp;Language ID of the submitted code.
 - **args** - *list, optional*\
   &nbsp;&nbsp;&nbsp;A list of compiler/interpreter args.
@@ -130,14 +128,14 @@ Makes a request to the endpoint synchronously.
 
 ### run_async
 ```python
-run_async(code: str, language_id: str | int, args: list = [], timeout: int = 0) -> asyncio.Future
+run_async(code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Future
 ```
 Makes a request to the endpoint asynchronously.
 
 **Parameters:**
 - **code** - *str*\
   &nbsp;&nbsp;&nbsp;The code to execute.
-- **language_id** - *str, int*\
+- **language** - *str, int*\
   &nbsp;&nbsp;&nbsp;Language ID of the submitted code.
 - **args** - *list, optional*\
   &nbsp;&nbsp;&nbsp;A list of compiler/interpreter args.
@@ -168,6 +166,40 @@ Returned as the result after a request.
   &nbsp;&nbsp;&nbsp;Details about why the request failed to complete.
 - **rapid** - *dict*\
   &nbsp;&nbsp;&nbsp;Various keys that RapidAPI uses when returning their own error messages.
+
+### Langs
+```python
+Langs:
+    PYTHON     = 1
+    JAVASCRIPT = 2
+    BASH       = 3
+    PERL       = 4
+    LUA        = 5
+    RUBY       = 6
+    C          = 7
+    CPP        = 8
+    RUST       = 9
+    FORTRAN    = 10
+    HASKELL    = 11
+    JAVA       = 12
+    GO         = 13
+    TYPESCRIPT = 14
+    CLISP      = 15
+    RACKET     = 16
+    CRYSTAL    = 17
+    CLOJUR     = 18
+    X86        = 19
+    ZIG        = 20
+    NIM        = 21
+    DLANG      = 22
+    CSHARP     = 23
+    RSCRIPT    = 24
+    DART       = 25
+    VB         = 26
+    FSHARP     = 27
+    PHP        = 28
+```
+A mapping of language IDs to their respective names.
 
 ### Exceptions
 - **RequestError** - Raised when an error occurs during the request

@@ -1,8 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-from whipcode import Whipcode
-from whipcode.exceptions import RequestError, PayloadBuildError
+from whipcode import Whipcode, Langs, RequestError, PayloadBuildError
 
 
 class TestClient(unittest.TestCase):
@@ -17,7 +16,7 @@ class TestClient(unittest.TestCase):
     def test_build_payload(self):
         payload = self.client._build_payload(
             code="print('Hello, World!')",
-            language_id=1,
+            language=Langs.PYTHON,
             args=["arg1", "arg2"],
             timeout=5
         )
@@ -31,7 +30,7 @@ class TestClient(unittest.TestCase):
 
     def test_build_payload_error(self):
         with self.assertRaises(PayloadBuildError):
-            self.client._build_payload(code=None, language_id=1, args=[], timeout=5)
+            self.client._build_payload(code=None, language=1, args=[], timeout=5)
 
     @patch("requests.post")
     def test_run(self, mock_post):
@@ -45,7 +44,7 @@ class TestClient(unittest.TestCase):
             "detail": "success"
         }
         mock_post.return_value = mock_response
-        result = self.client.run("print('Hello')", language_id=1)
+        result = self.client.run("print('Hello')", language=Langs.PYTHON)
         self.assertEqual(result.status, 200)
         self.assertEqual(result.stdout, "output")
         self.assertEqual(result.stderr, "")
@@ -57,4 +56,4 @@ class TestClient(unittest.TestCase):
     def test_request_error(self, mock_post):
         mock_post.side_effect = Exception("Network error")
         with self.assertRaises(RequestError):
-            self.client.run("print('Hello')", language_id=1)
+            self.client.run("print('Hello')", language=Langs.PYTHON)

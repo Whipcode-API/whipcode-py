@@ -68,9 +68,9 @@ class Whipcode:
     -------
     rapid_key(key: str):
         Set the RapidAPI key for the client
-    run_async(code: str, language_id: str, args: list = [], timeout: int = 0):
+    run_async(code: str, language: str, args: list = [], timeout: int = 0):
         Make an asynchronous request to the API
-    run(code: str, language_id: str, args: list = [], timeout: int = 0):
+    run(code: str, language: str, args: list = [], timeout: int = 0):
         Make a synchronous request to the API
     """
     default_provider = {
@@ -97,12 +97,12 @@ class Whipcode:
         """
         self.provider["headers"]["X-RapidAPI-Key"] = key
 
-    def _build_payload(self, code: str, language_id: str | int, args: list, timeout: int) -> dict:
+    def _build_payload(self, code: str, language: str | int, args: list, timeout: int) -> dict:
         """[internal] Build the payload for the request"""
         try:
             payload = {
                 "code": base64.b64encode(code.encode()).decode(),
-                "language_id": str(language_id),
+                "language_id": str(language),
                 "args": " ".join(args),
                 "timeout": timeout
             }
@@ -115,13 +115,13 @@ class Whipcode:
         except Exception as e:
             raise PayloadBuildError(e)
 
-    def run_async(self, code: str, language_id: str | int, args: list = [], timeout: int = 0) -> asyncio.Future:
+    def run_async(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Future:
         """Make an asynchronous request to the API
 
         Parameters
         ----------
         code, str: The code to execute
-        language_id, str/int: The language ID
+        language, str/int: The language ID
         args, list, optional: The arguments to pass to the code
         timeout, int, optional: The timeout for the request
 
@@ -130,13 +130,13 @@ class Whipcode:
         asyncio.Future: The future object that will resolve to ExecutionResult
         """
         future = asyncio.get_event_loop().create_future()
-        asyncio.create_task(self._request_async(code, language_id, args, timeout, future))
+        asyncio.create_task(self._request_async(code, language, args, timeout, future))
         return future
 
-    async def _request_async(self, code: str, language_id: str | int, args: list, timeout: int, future: asyncio.Future):
+    async def _request_async(self, code: str, language: str | int, args: list, timeout: int, future: asyncio.Future):
         """[internal] Make the async request to the API"""
         headers = self.provider["headers"]
-        payload = self._build_payload(code, language_id, args, timeout)
+        payload = self._build_payload(code, language, args, timeout)
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(self.provider["endpoint"], headers=headers, json=payload) as response:
@@ -154,13 +154,13 @@ class Whipcode:
         except Exception as e:
             future.set_exception(RequestError(e))
 
-    def run(self, code: str, language_id: str | int, args: list = [], timeout: int = 0) -> ExecutionResult:
+    def run(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> ExecutionResult:
         """Make a synchronous request to the API
 
         Parameters
         ----------
         code, str: The code to execute
-        language_id, str/int: The language ID
+        language, str/int: The language ID
         args, list, optional: The arguments to pass to the code
         timeout, int, optional: The timeout for the request
 
@@ -169,7 +169,7 @@ class Whipcode:
         ExecutionResult: The result of the request
         """
         headers = self.provider["headers"]
-        payload = self._build_payload(code, language_id, args, timeout)
+        payload = self._build_payload(code, language, args, timeout)
         try:
             response = requests.post(self.provider["endpoint"], headers=headers, json=payload)
             json_response = response.json()

@@ -1,7 +1,7 @@
 [tool.poetry]
 name           = "whipcode"
-version        = "0.1.0"
-description    = "The official Python client for Whipcode API"
+version        = "0.1.1"
+description    = "Official Python client for Whipcode API"
 authors        = ["AnnikaV9 <carrot.moncher@gmail.com>"]
 license        = "MIT"
 readme         = "docs/README.md"

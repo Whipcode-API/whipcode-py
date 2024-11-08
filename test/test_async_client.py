@@ -1,8 +1,7 @@
 import unittest
 from unittest.mock import patch, AsyncMock
 
-from whipcode import Whipcode
-from whipcode.exceptions import RequestError
+from whipcode import Whipcode, Langs, RequestError
 
 
 class TestWhipcodeAsyncClient(unittest.IsolatedAsyncioTestCase):
@@ -22,7 +21,7 @@ class TestWhipcodeAsyncClient(unittest.IsolatedAsyncioTestCase):
             "detail": "async success"
         }
         mock_post.return_value.__aenter__.return_value = mock_response
-        future = self.client.run_async("print('Hello')", language_id=1)
+        future = self.client.run_async("print('Hello')", language=Langs.PYTHON)
         result = await future
         self.assertEqual(result.status, 200)
         self.assertEqual(result.stdout, "async output")
@@ -35,5 +34,5 @@ class TestWhipcodeAsyncClient(unittest.IsolatedAsyncioTestCase):
     async def test_run_async_request_error(self, mock_post):
         mock_post.side_effect = Exception("Async network error")
         with self.assertRaises(RequestError):
-            future = self.client.run_async("print('Hello')", language_id=1)
+            future = self.client.run_async("print('Hello')", language=Langs.PYTHON)
             await future
