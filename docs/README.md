@@ -17,6 +17,7 @@ Here's an asynchronous snippet:
 import asyncio
 
 from whipcode import Whipcode, Langs
+from whipcode.exceptions import RequestError, PayloadBuildError
 
 async def main():
     whip = Whipcode()
@@ -25,15 +26,21 @@ async def main():
     code = "echo 'Hello World!'"
 
     execution = whip.run_async(code, Langs.BASH)
-    result = await execution
 
-    print(result)
+    # Other tasks while the execution is in progress
+
+    try:
+        result = await execution
+
+    except (RequestError, PayloadBuildError) as e:
+        # Handle the error
 
 asyncio.run(main())
 ```
 And a synchronous one:
 ```python
 from whipcode import Whipcode, Langs
+from whipcode.exceptions import RequestError, PayloadBuildError
 
 def main():
     whip = Whipcode()
@@ -41,13 +48,15 @@ def main():
 
     code = '(println "Hello World!")'
 
-    result = whip.run(code, Langs.CLOJURE)
+    try:
+        result = whip.run(code, Langs.CLOJURE)
 
-    print(result)
+    except (RequestError, PayloadBuildError) as e:
+        # Handle the error
 
 main()
 ```
-The output:
+The result object:
 ```
 ExecutionResult(status=200, stdout='Hello World!\n', stderr='', container_age=0.338638005, timeout=False, detail='', rapid={'messages': '', 'message': '', 'info': ''})
 ```
@@ -128,7 +137,7 @@ Makes a request to the endpoint synchronously.
 
 ### run_async
 ```python
-run_async(code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Future
+run_async(code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Task
 ```
 Makes a request to the endpoint asynchronously.
 
@@ -143,7 +152,7 @@ Makes a request to the endpoint asynchronously.
   &nbsp;&nbsp;&nbsp;Timeout in seconds for the code to run.
 
 **Returns:**
-- A future that resolves to [ExecutionResult](#executionresult).
+- A Task that returns [ExecutionResult](#executionresult).
 
 ### ExecutionResult
 ```python

@@ -1,6 +1,6 @@
 [tool.poetry]
 name           = "whipcode"
-version        = "0.1.2"
+version        = "0.1.3"
 description    = "Official Python client for Whipcode API"
 authors        = ["AnnikaV9 <carrot.moncher@gmail.com>"]
 license        = "MIT"

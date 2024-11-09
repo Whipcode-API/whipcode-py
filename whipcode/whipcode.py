@@ -115,7 +115,7 @@ class Whipcode:
         except Exception as e:
             raise PayloadBuildError(e)
 
-    def run_async(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Future:
+    def run_async(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Task:
         """Make an asynchronous request to the API
 
         Parameters
@@ -127,13 +127,11 @@ class Whipcode:
 
         Returns
         -------
-        asyncio.Future: The future object that will resolve to ExecutionResult
+        asyncio.Task: The task for the request that will return ExecutionResult
         """
-        future = asyncio.get_event_loop().create_future()
-        asyncio.create_task(self._request_async(code, language, args, timeout, future))
-        return future
+        return asyncio.create_task(self._request_async(code, language, args, timeout))
 
-    async def _request_async(self, code: str, language: str | int, args: list, timeout: int, future: asyncio.Future):
+    async def _request_async(self, code: str, language: str | int, args: list, timeout: int):
         """[internal] Make the async request to the API"""
         headers = self.provider["headers"]
         payload = self._build_payload(code, language, args, timeout)
@@ -149,10 +147,10 @@ class Whipcode:
                         timeout=json_response.get("timeout", False),
                         detail=json_response.get("detail", "")
                     )
-                    future.set_result(result)
+                    return result
 
         except Exception as e:
-            future.set_exception(RequestError(e))
+            raise RequestError(e)
 
     def run(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> ExecutionResult:
         """Make a synchronous request to the API
