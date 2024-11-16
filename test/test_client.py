@@ -18,19 +18,30 @@ class TestClient(unittest.TestCase):
             code="print('Hello, World!')",
             language=Langs.PYTHON,
             args=["arg1", "arg2"],
-            timeout=5
+            timeout=5,
+            stdin="",
+            env={}
         )
         expected_payload = {
             "code": "cHJpbnQoJ0hlbGxvLCBXb3JsZCEnKQ==",
             "language_id": "1",
             "args": "arg1 arg2",
-            "timeout": 5
+            "timeout": 5,
+            "stdin": "",
+            "env": {}
         }
         self.assertEqual(payload, expected_payload)
 
     def test_build_payload_error(self):
         with self.assertRaises(PayloadBuildError):
-            self.client._build_payload(code=None, language=1, args=[], timeout=5)
+            self.client._build_payload(
+                code=None,
+                language=1,
+                args=[],
+                timeout=5,
+                stdin="",
+                env={}
+            )
 
     @patch("requests.post")
     def test_run(self, mock_post):

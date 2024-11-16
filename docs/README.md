@@ -131,6 +131,10 @@ Makes a request to the endpoint synchronously.
   &nbsp;&nbsp;&nbsp;A list of compiler/interpreter args.
 - **timeout** - *int, optional*\
   &nbsp;&nbsp;&nbsp;Timeout in seconds for the code to run.
+- **stdin** - *str, optional*\
+  &nbsp;&nbsp;&nbsp;Standard input passed to the execution.
+- **env** - *dict, optional*\
+  &nbsp;&nbsp;&nbsp;Environment variables to set.
 
 **Returns:**
 - [ExecutionResult](#executionresult)
@@ -150,6 +154,10 @@ Makes a request to the endpoint asynchronously.
   &nbsp;&nbsp;&nbsp;A list of compiler/interpreter args.
 - **timeout** - *int, optional*\
   &nbsp;&nbsp;&nbsp;Timeout in seconds for the code to run.
+- **stdin** - *str, optional*\
+  &nbsp;&nbsp;&nbsp;Standard input passed to the execution.
+- **env** - *dict, optional*\
+  &nbsp;&nbsp;&nbsp;Environment variables to set.
 
 **Returns:**
 - A Task that returns [ExecutionResult](#executionresult).

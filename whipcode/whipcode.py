@@ -97,14 +97,16 @@ class Whipcode:
         """
         self.provider["headers"]["X-RapidAPI-Key"] = key
 
-    def _build_payload(self, code: str, language: str | int, args: list, timeout: int) -> dict:
+    def _build_payload(self, code: str, language: str | int, args: list, timeout: int, stdin: str, env: dict) -> dict:
         """[internal] Build the payload for the request"""
         try:
             payload = {
                 "code": base64.b64encode(code.encode()).decode(),
                 "language_id": str(language),
                 "args": " ".join(args),
-                "timeout": timeout
+                "timeout": timeout,
+                "stdin": stdin,
+                "env": env
             }
 
             for inject in self.provider["query_injects"]:
@@ -115,7 +117,7 @@ class Whipcode:
         except Exception as e:
             raise PayloadBuildError(e)
 
-    def run_async(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> asyncio.Task:
+    def run_async(self, code: str, language: str | int, args: list = [], timeout: int = 0, stdin: str = "", env: dict = {}) -> asyncio.Task:
         """Make an asynchronous request to the API
 
         Parameters
@@ -129,12 +131,12 @@ class Whipcode:
         -------
         asyncio.Task: The task for the request that will return ExecutionResult
         """
-        return asyncio.create_task(self._request_async(code, language, args, timeout))
+        return asyncio.create_task(self._request_async(code, language, args, timeout, stdin, env))
 
-    async def _request_async(self, code: str, language: str | int, args: list, timeout: int):
+    async def _request_async(self, code: str, language: str | int, args: list, timeout: int, stdin: str, env: dict) -> ExecutionResult:
         """[internal] Make the async request to the API"""
         headers = self.provider["headers"]
-        payload = self._build_payload(code, language, args, timeout)
+        payload = self._build_payload(code, language, args, timeout, stdin, env)
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.post(self.provider["endpoint"], headers=headers, json=payload) as response:
@@ -152,7 +154,7 @@ class Whipcode:
         except Exception as e:
             raise RequestError(e)
 
-    def run(self, code: str, language: str | int, args: list = [], timeout: int = 0) -> ExecutionResult:
+    def run(self, code: str, language: str | int, args: list = [], timeout: int = 0, stdin: str = "", env: dict = {}) -> ExecutionResult:
         """Make a synchronous request to the API
 
         Parameters
@@ -167,7 +169,7 @@ class Whipcode:
         ExecutionResult: The result of the request
         """
         headers = self.provider["headers"]
-        payload = self._build_payload(code, language, args, timeout)
+        payload = self._build_payload(code, language, args, timeout, stdin, env)
         try:
             response = requests.post(self.provider["endpoint"], headers=headers, json=payload)
             json_response = response.json()
