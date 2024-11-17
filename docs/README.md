@@ -21,7 +21,7 @@ from whipcode.exceptions import RequestError, PayloadBuildError
 
 async def main():
     whip = Whipcode()
-    whip.rapid_key("YOUR_RAPIDAPI_KEY")
+    whip.rapid_key("YOUR_RAPIDAPI_KEY")  # not needed if the RAPID_KEY environment variable is set
 
     code = "echo 'Hello World!'"
 
@@ -44,7 +44,6 @@ from whipcode.exceptions import RequestError, PayloadBuildError
 
 def main():
     whip = Whipcode()
-    whip.rapid_key("YOUR_RAPIDAPI_KEY")
 
     code = '(println "Hello World!")'
 

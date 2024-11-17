@@ -1,6 +1,7 @@
 """Python client for Whipcode API"""
 
 # stdlib
+import os
 import base64
 import asyncio
 
@@ -87,6 +88,8 @@ class Whipcode:
     def __init__(self, provider: dict = default_provider):
         """Constructor method"""
         self.provider = provider
+        if "RAPID_KEY" in os.environ:
+            self.provider["headers"]["X-RapidAPI-Key"] = os.environ["RAPID_KEY"]
 
     def rapid_key(self, key: str):
         """Set the RapidAPI key for the client.
