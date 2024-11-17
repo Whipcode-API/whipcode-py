@@ -24,6 +24,7 @@ class ExecutionResult:
     timeout, bool: Whether the execution timed out
     status, int: The status code of the request
     detail, str: Additional details if the request failed
+    rapid, dict: The RapidAPI response
     """
     def __init__(self, stdout: str, stderr: str, container_age: float, timeout: bool, status: int, detail: str, rapid: dict = {}):
         """
@@ -150,7 +151,12 @@ class Whipcode:
                         stderr=json_response.get("stderr", ""),
                         container_age=json_response.get("container_age", 0),
                         timeout=json_response.get("timeout", False),
-                        detail=json_response.get("detail", "")
+                        detail=json_response.get("detail", ""),
+                        rapid={
+                            "messages": json_response.get("messages", ""),
+                            "message": json_response.get("message", ""),
+                            "info": json_response.get("info", ""),
+                        }
                     )
                     return result
 
